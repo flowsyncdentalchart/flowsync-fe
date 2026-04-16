@@ -1,29 +1,18 @@
----
-name: Standard issue template
-about: Describe this issue template's purpose here.
-title: ''
-labels: ''
-assignees: ''
-
----
+## Title
+<Page name>
 
 ## Description
-<!-- What is this task or bug about? -->
+Short description of what should be built.
 
-## Endpoint
-- **URL:** /api/...  
-- **Method:** GET / POST / PUT / DELETE  
+## Done when
+- [ ] UI is implemented
+- [ ] Works with backend
+- [ ] No major bugs
 
-## Test
-<!-- What tests should be done? -->
-
-## Definition of Done
-- [ ] Wrote the code necessary for the issue
-- [ ] All tests are green
-- [ ] Tested in Postman
-- [ ] Follows our coding rules
-- [ ] Invalid requests return proper error codes and meaningful messages
-- [ ] Saved all responses in Postman
+## Tasks
+- [ ] Build UI
+- [ ] Connect API
+- [ ] Test functionality
 
 ## Notes
-<!-- Any extra info or examples -->
+Optional notes
