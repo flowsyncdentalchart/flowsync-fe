@@ -9,5 +9,4 @@ What does this PR do?
 
 ## Checklist
 - [ ] Code reviewed
-- [ ] Tested in postman
-- [ ] Documented in postman
+- [ ] Layot manually tested
