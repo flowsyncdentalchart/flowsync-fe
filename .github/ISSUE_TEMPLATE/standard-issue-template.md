@@ -1,3 +1,8 @@
+---
+name: Task / Feature
+about: Describe a new task or feature
+---
+
 ## Title
 <Page name>
 
