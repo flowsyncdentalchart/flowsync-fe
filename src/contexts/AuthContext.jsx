@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
 
   const [loading, setLoading] = useState(true);
 
-   useEffect(() => {
+  useEffect(() => {
     checkAuthStatus();
   }, []);
 
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }; 
+  };
 
   const login = async (username, password) => {
     try {
@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
       return response.data;
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
+      throw error;
     }
   };
 
