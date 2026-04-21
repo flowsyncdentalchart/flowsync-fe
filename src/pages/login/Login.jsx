@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
-import Logo from "../assets/logo.jsx";
-import "../pages/login.css";
+import { useAuth } from "../../hooks/useAuth.jsx";
+import Logo from "../../assets/logo.jsx";
+import  "./Login.css";
+import Button from "../../components/buttons/Button.jsx";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -13,7 +14,7 @@ const Login = () => {
 
   const { login, checkAuthStatus } = useAuth();
 
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/user/dashboard";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,8 +57,9 @@ const Login = () => {
           </div>
 
           <div className="button">
-            <button className="button-login" type="submit">Login</button>
+            <Button type="submit">Login</Button>
           </div>
+
         </form>
       </div>
     </div>
