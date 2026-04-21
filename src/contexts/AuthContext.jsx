@@ -48,8 +48,6 @@ export const AuthProvider = ({ children }) => {
 
       setCurrentUser(null);
 
-      // CLEAN BOOKING DATA  AFTER LOGOUT BUT SAVE IT WHEN DO REFRESH OR CLOSE BROWSER
-
       localStorage.removeItem("token");
     } catch (error) {
       console.error("Logout error:", error.response?.data || error.message);

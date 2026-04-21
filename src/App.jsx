@@ -3,6 +3,8 @@ import Login from "./pages/login/Login.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import PrivateRoute from "./routes/PrivateRoute.jsx";
 import "./App.css";
+import UserPage from "./pages/userPage/UserPage.jsx";
+
 
 function App() {
   return (
@@ -11,14 +13,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
-          <Route
-            path="/user/dashboard"
-            element={
-              <PrivateRoute>
-                {/*<UserDashboard />*/}
-              </PrivateRoute>
-            }
-          />
+         <Route
+  path="/user/dashboard"
+  element={
+    <PrivateRoute>
+      <UserPage />
+    </PrivateRoute>
+  }
+/>
         </Routes>
       </AuthProvider>
     </BrowserRouter>
