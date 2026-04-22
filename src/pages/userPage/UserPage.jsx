@@ -5,10 +5,14 @@ import "./userPage.css";
 import Button from "../../components/button/Button.jsx";
 import Logo from "../../assets/logo.jsx";
 import AddIcon from "../../assets/AddIcon.jsx";
-import { getAllPatients, getRecentPatients } from "../../services/patientService";
+import {
+  getAllPatients,
+  getRecentPatients,
+} from "../../services/patientService";
 
 export default function UserPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [patients, setPatients] = useState([]);
   const [recentPatients, setRecentPatients] = useState([]);
   const [activePatient, setActivePatient] = useState(null);
@@ -20,31 +24,33 @@ export default function UserPage() {
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
 
-  // =========================
-  // MAIN PAGINATED LIST
-  // =========================
- useEffect(() => {
-  if (!user) return;
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedQuery(searchQuery), 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
-  const fetchPatients = async () => {
-    try {
-      const res = await getAllPatients(page, size, searchQuery); // pass query ✅
-      const content = res?.content ?? res?.data?.content ?? [];
-      setPatients(Array.isArray(content) ? content : []);
-      setTotalPages(res?.totalPages ?? 0);
-    } catch (err) {
-      console.error("Failed to fetch patients:", err);
-      setPatients([]);
-    }
-  };
+  useEffect(() => {
+    setPage(0);
+  }, [debouncedQuery]);
 
-  fetchPatients();
-}, [user, page, size, searchQuery]); // add searchQuery ✅
+  useEffect(() => {
+    if (!user) return;
 
+    const fetchPatients = async () => {
+      try {
+        const res = await getAllPatients(page, size, debouncedQuery);
+        const content = res?.content ?? res?.data?.content ?? [];
+        setPatients(Array.isArray(content) ? content : []);
+        setTotalPages(res?.totalPages ?? 0);
+      } catch (err) {
+        console.error("Failed to fetch patients:", err);
+        setPatients([]);
+      }
+    };
 
-  // =========================
-  // RECENT PATIENTS
-  // =========================
+    fetchPatients();
+  }, [user, page, size, debouncedQuery]);
+
   useEffect(() => {
     if (!user) return;
 
@@ -61,40 +67,19 @@ export default function UserPage() {
     fetchRecent();
   }, [user]);
 
-  // =========================
-  // CREATE PATIENT HANDLER
-  // =========================
   const handlePatientCreated = async () => {
     try {
-      // refresh paginated list
-      const res = await getAllPatients(page, size);
-
-      const content =
-        res?.content ??
-        res?.data?.content ??
-        [];
-
+      const res = await getAllPatients(page, size, debouncedQuery);
+      const content = res?.content ?? res?.data?.content ?? [];
       setPatients(Array.isArray(content) ? content : []);
       setTotalPages(res?.totalPages ?? 0);
 
-      // refresh recent list
       const recent = await getRecentPatients();
       setRecentPatients(Array.isArray(recent) ? recent : []);
     } catch (err) {
       console.error("Failed to refresh after create:", err);
     }
   };
-
-  // =========================
-  // SEARCH FILTER
-  // =========================
-  const filteredPatients = Array.isArray(patients)
-    ? patients.filter((p) =>
-        `${p.firstName} ${p.lastName}`
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase())
-      )
-    : [];
 
   return (
     <div className="up-layout">
@@ -104,7 +89,7 @@ export default function UserPage() {
           <span className="up-logo-text">FlowSync</span>
         </div>
 
-        <p className="up-section-label">Recent patients</p>
+        <p className="up-section-label">Recently created patients</p>
         <ul className="up-patient-list">
           {recentPatients.map((p) => (
             <li
@@ -143,13 +128,12 @@ export default function UserPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-
           <Button className="up-search-btn">SEARCH</Button>
         </div>
 
         <div className="up-results">
-          {filteredPatients.length > 0 ? (
-            filteredPatients.map((p) => (
+          {patients.length > 0 ? (
+            patients.map((p) => (
               <div
                 key={p.id}
                 className="up-result-item"
