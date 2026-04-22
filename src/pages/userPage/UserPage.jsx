@@ -1,49 +1,47 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
 import "./userPage.css";
 import Button from "../../components/buttons/Button.jsx";
 import Logo from "../../assets/logo.jsx";
 import AddIcon from "../../assets/AddIcon.jsx";
-
-const recentPatients = ["Bodil Sten", "Marie Joel", "Martha Malm", "Amanda Torkelsson"];
-
-      {/* temporary mock patients */}
-
-const allPatients = [
-  "Gabriela Solez",
-  "Michael Joel",
-  "Ali Safari",
-  "Sebastian Strands",
-  "Michaela Green",
-  "Marie Smith",
-  "Grigory Ivanov",
-  "Marius Polacu",
-  "Lia Greenman",
-  "Angela Bors",
-];
-
+import { getAllPatients } from "../../services/patientService";
 
 export default function UserPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredPatients, setFilteredPatients] = useState(allPatients);
+  const [patients, setPatients] = useState([]);
+  const [filteredPatients, setFilteredPatients] = useState([]);
+  const [recentPatients, setRecentPatients] = useState([]);
   const [activePatient, setActivePatient] = useState("");
+  const { user } = useContext(AuthContext);
 
-  const handleSearch = () => {
-    const query = searchQuery.toLowerCase();
-    setFilteredPatients(
-      allPatients.filter((p) => p.toLowerCase().includes(query))
-    );
-  };
+useEffect(() => {
+  getAllPatients().then((data) => {
+    console.log("First patient:", JSON.stringify(data[0]));
+    setPatients(data);
+    setFilteredPatients(data);
+    setRecentPatients(data.slice(0, 4));
+  });
+}, []);
+
+const handleSearch = () => {
+  const query = searchQuery.toLowerCase();
+  console.log("Query:", query);
+  console.log("Patients array:", patients);
+  const results = patients.filter(
+    (p) =>
+      p.firstName.toLowerCase().includes(query) ||
+      p.lastName.toLowerCase().includes(query)
+  );
+  console.log("Results:", results);
+  setFilteredPatients(results);
+};
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") handleSearch();
   };
 
-  const { user } = useContext(AuthContext);
-
   return (
     <div className="up-layout">
-      {/* sidebar */}
       <aside className="up-sidebar">
         <div className="up-logo">
           <Logo className="up-logo-icon" />
@@ -52,13 +50,13 @@ export default function UserPage() {
 
         <p className="up-section-label">Recent patients</p>
         <ul className="up-patient-list">
-          {recentPatients.map((name) => (
+          {recentPatients.map((p) => (
             <li
-              key={name}
-              className={`up-patient-item ${activePatient === name ? "active" : ""}`}
-              onClick={() => setActivePatient(name)}
+              key={p.id}
+              className={`up-patient-item ${activePatient === p.id ? "active" : ""}`}
+              onClick={() => setActivePatient(p.id)}
             >
-              {name}
+              {p.firstName} {p.lastName}
             </li>
           ))}
         </ul>
@@ -68,12 +66,12 @@ export default function UserPage() {
         </button>
       </aside>
 
-      {/* main content */}
       <main className="up-main">
         <div className="up-user-header">
-  <h1 className="up-user-name">{user?.firstName} {user?.lastName}</h1>
-  <p className="up-user-title">{user?.title}</p>
-</div>
+          <h1 className="up-user-name">{user?.firstName} {user?.lastName}</h1>
+          <p className="up-user-title">{user?.title}</p>
+        </div>
+
         <div className="up-search-bar">
           <input
             className="up-search-input"
@@ -83,15 +81,15 @@ export default function UserPage() {
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleKeyDown}
           />
-          <Button className="up-search-btn" onClick={handleSearch}>
-            SEARCH
-          </Button>
+       <Button className="up-search-btn" onClick={() => console.log("button clicked")}>
+  SEARCH
+</Button>
         </div>
 
         <div className="up-results">
-          {filteredPatients.map((name) => (
-            <div key={name} className="up-result-item">
-              {name}
+          {filteredPatients.map((p) => (
+            <div key={p.id} className="up-result-item">
+              {p.firstName} {p.lastName}
             </div>
           ))}
           {filteredPatients.length === 0 && (
