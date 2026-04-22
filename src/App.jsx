@@ -1,8 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import "./App.css";
 import UserPage from "./pages/userPage/UserPage.jsx";
+import PrivateRoute from "./components/PrivateRoute.jsx";
 
 
 function App() {
