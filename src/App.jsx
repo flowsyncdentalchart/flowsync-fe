@@ -3,7 +3,7 @@ import Login from "./pages/Login.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import "./App.css";
 import UserPage from "./pages/userPage/UserPage.jsx";
-import PrivateRoute from "./components/PrivateRoute.jsx";
+import PrivateRoute from "./routes/PrivateRoute.jsx";
 
 
 function App() {
