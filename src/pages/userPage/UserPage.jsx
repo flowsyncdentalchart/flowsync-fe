@@ -10,8 +10,8 @@ import { getAllPatients, getRecentPatients } from "../../services/patientService
 export default function UserPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [patients, setPatients] = useState([]);
-  const [activePatient, setActivePatient] = useState(null);
   const [recentPatients, setRecentPatients] = useState([]);
+  const [activePatient, setActivePatient] = useState(null);
   const { user } = useContext(AuthContext);
   const [showAddModal, setShowAddModal] = useState(false);
 
@@ -20,31 +20,31 @@ export default function UserPage() {
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
 
+  // =========================
   // MAIN PAGINATED LIST
-  useEffect(() => {
-    if (!user) return;
+  // =========================
+ useEffect(() => {
+  if (!user) return;
 
-    const fetchPatients = async () => {
-      try {
-        const res = await getAllPatients(page, size);
+  const fetchPatients = async () => {
+    try {
+      const res = await getAllPatients(page, size, searchQuery); // pass query ✅
+      const content = res?.content ?? res?.data?.content ?? [];
+      setPatients(Array.isArray(content) ? content : []);
+      setTotalPages(res?.totalPages ?? 0);
+    } catch (err) {
+      console.error("Failed to fetch patients:", err);
+      setPatients([]);
+    }
+  };
 
-        const content =
-          res?.content ??
-          res?.data?.content ??
-          (Array.isArray(res) ? res : []);
+  fetchPatients();
+}, [user, page, size, searchQuery]); // add searchQuery ✅
 
-        setPatients(Array.isArray(content) ? content : []);
-        setTotalPages(res?.totalPages ?? 0);
-      } catch (err) {
-        console.error("Failed to fetch patients:", err);
-        setPatients([]);
-      }
-    };
 
-    fetchPatients();
-  }, [user, page, size]);
-
-  // RECENT PATIENTS (GLOBAL, NOT PAGINATED)
+  // =========================
+  // RECENT PATIENTS
+  // =========================
   useEffect(() => {
     if (!user) return;
 
@@ -61,10 +61,33 @@ export default function UserPage() {
     fetchRecent();
   }, [user]);
 
-  const handlePatientCreated = (newPatient) => {
-    setPatients((prev) => [newPatient, ...prev]);
+  // =========================
+  // CREATE PATIENT HANDLER
+  // =========================
+  const handlePatientCreated = async () => {
+    try {
+      // refresh paginated list
+      const res = await getAllPatients(page, size);
+
+      const content =
+        res?.content ??
+        res?.data?.content ??
+        [];
+
+      setPatients(Array.isArray(content) ? content : []);
+      setTotalPages(res?.totalPages ?? 0);
+
+      // refresh recent list
+      const recent = await getRecentPatients();
+      setRecentPatients(Array.isArray(recent) ? recent : []);
+    } catch (err) {
+      console.error("Failed to refresh after create:", err);
+    }
   };
 
+  // =========================
+  // SEARCH FILTER
+  // =========================
   const filteredPatients = Array.isArray(patients)
     ? patients.filter((p) =>
         `${p.firstName} ${p.lastName}`

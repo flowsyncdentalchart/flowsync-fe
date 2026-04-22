@@ -32,7 +32,6 @@ export default function AddPatientModal({ onClose, onPatientCreated }) {
         lastName: lastName.trim(),
       });
 
-      // 🔥 instant update in parent
       onPatientCreated?.(newPatient);
 
       resetForm();
@@ -47,10 +46,7 @@ export default function AddPatientModal({ onClose, onPatientCreated }) {
 
   return (
     <div className="add-patient-overlay" onClick={onClose}>
-      <div
-        className="add-patient-modal"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="add-patient-modal" onClick={(e) => e.stopPropagation()}>
         <h2 className="add-patient-title">New Patient</h2>
 
         <input
@@ -70,7 +66,11 @@ export default function AddPatientModal({ onClose, onPatientCreated }) {
         {error && <p className="add-patient-error">{error}</p>}
 
         <div className="add-patient-footer">
-          <button onClick={onClose} disabled={loading}>
+          <button
+            className="add-patient-cancel"
+            onClick={onClose}
+            disabled={loading}
+          >
             Cancel
           </button>
 

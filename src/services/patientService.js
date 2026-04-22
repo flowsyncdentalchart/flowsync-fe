@@ -2,7 +2,7 @@ import api from "../api/axios";
 
 export const getAllPatients = async (page, size, searchQuery) => {
   const { data } = await api.get("/api/patient", {
-    params: { page, size, searchQuery },
+    params: { page, size, search: searchQuery }, 
   });
   return data;
 };
