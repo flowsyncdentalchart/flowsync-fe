@@ -5,7 +5,6 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -13,14 +12,22 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const checkAuthStatus = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setCurrentUser(null);
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await api.get("/check");
-
       setCurrentUser(response.data);
-      return response.data;
     } catch (error) {
+      console.log("Auth check failed:", error.message);
+
       setCurrentUser(null);
-      console.log("Authentication check failed:", error.message);
+      localStorage.removeItem("token");
     } finally {
       setLoading(false);
     }
@@ -30,10 +37,11 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await api.post("/login", { username, password });
 
-      setCurrentUser(response.data);
+      const token = response.data.accessToken;
 
-      console.log("Response: " + JSON.stringify(response.data));
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("token", token);
+
+      setCurrentUser(response.data);
 
       return response.data;
     } catch (error) {
@@ -45,26 +53,23 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await api.post("/logout");
-
-      setCurrentUser(null);
-
-      localStorage.removeItem("token");
     } catch (error) {
-      console.error("Logout error:", error.response?.data || error.message);
-
+      console.error("Logout error:", error.message);
+    } finally {
       setCurrentUser(null);
+      localStorage.removeItem("token");
     }
   };
 
-  const value = {
-    user: currentUser,
-    login,
-    logout,
-    checkAuthStatus,
-  };
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider
+      value={{
+        user: currentUser,
+        login,
+        logout,
+        checkAuthStatus,
+      }}
+    >
       {!loading && children}
     </AuthContext.Provider>
   );

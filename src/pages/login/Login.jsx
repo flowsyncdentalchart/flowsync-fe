@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth.jsx";
 import Logo from "../../assets/logo.jsx";
 import "./Login.css";
-import Button from "../../components/buttons/Button.jsx";
+import Button from "../../components/button/Button.jsx";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -15,20 +15,20 @@ const Login = () => {
 
   const { login } = useAuth();
 
-const from = location.state?.from?.pathname || "/user/dashboard";
+  const from = location.state?.from?.pathname || "/user/dashboard";
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  console.log("handleSubmit сработал"); // ← видишь это?
-  setError("");
-  try {
-    await login(username, password);
-    navigate(from, { replace: true });
-  } catch (err) {
-    console.log("catch worked", err); // ← видишь это?
-    setError("Invalid username or password");
-  }
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("handleSubmit сработал"); // ← видишь это?
+    setError("");
+    try {
+      await login(username, password);
+      navigate(from, { replace: true });
+    } catch (err) {
+      console.log("catch worked", err); // ← видишь это?
+      setError("Invalid username or password");
+    }
+  };
 
   return (
     <div className="login-page">

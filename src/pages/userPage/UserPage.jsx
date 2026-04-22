@@ -1,44 +1,77 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
+import AddPatientModal from "../../components/addPatientModal/AddPatientModal.jsx";
 import "./userPage.css";
-import Button from "../../components/buttons/Button.jsx";
+import Button from "../../components/button/Button.jsx";
 import Logo from "../../assets/logo.jsx";
 import AddIcon from "../../assets/AddIcon.jsx";
-import { getAllPatients } from "../../services/patientService";
+import { getAllPatients, getRecentPatients } from "../../services/patientService";
 
 export default function UserPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [patients, setPatients] = useState([]);
-  const [filteredPatients, setFilteredPatients] = useState([]);
+  const [activePatient, setActivePatient] = useState(null);
   const [recentPatients, setRecentPatients] = useState([]);
-  const [activePatient, setActivePatient] = useState("");
   const { user } = useContext(AuthContext);
+  const [showAddModal, setShowAddModal] = useState(false);
 
-useEffect(() => {
-  getAllPatients().then((data) => {
-    console.log("First patient:", JSON.stringify(data[0]));
-    setPatients(data);
-    setFilteredPatients(data);
-    setRecentPatients(data.slice(0, 4));
-  });
-}, []);
+  // pagination
+  const [page, setPage] = useState(0);
+  const [size] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
 
-const handleSearch = () => {
-  const query = searchQuery.toLowerCase();
-  console.log("Query:", query);
-  console.log("Patients array:", patients);
-  const results = patients.filter(
-    (p) =>
-      p.firstName.toLowerCase().includes(query) ||
-      p.lastName.toLowerCase().includes(query)
-  );
-  console.log("Results:", results);
-  setFilteredPatients(results);
-};
+  // MAIN PAGINATED LIST
+  useEffect(() => {
+    if (!user) return;
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") handleSearch();
+    const fetchPatients = async () => {
+      try {
+        const res = await getAllPatients(page, size);
+
+        const content =
+          res?.content ??
+          res?.data?.content ??
+          (Array.isArray(res) ? res : []);
+
+        setPatients(Array.isArray(content) ? content : []);
+        setTotalPages(res?.totalPages ?? 0);
+      } catch (err) {
+        console.error("Failed to fetch patients:", err);
+        setPatients([]);
+      }
+    };
+
+    fetchPatients();
+  }, [user, page, size]);
+
+  // RECENT PATIENTS (GLOBAL, NOT PAGINATED)
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchRecent = async () => {
+      try {
+        const data = await getRecentPatients();
+        setRecentPatients(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Failed to fetch recent patients:", err);
+        setRecentPatients([]);
+      }
+    };
+
+    fetchRecent();
+  }, [user]);
+
+  const handlePatientCreated = (newPatient) => {
+    setPatients((prev) => [newPatient, ...prev]);
   };
+
+  const filteredPatients = Array.isArray(patients)
+    ? patients.filter((p) =>
+        `${p.firstName} ${p.lastName}`
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase())
+      )
+    : [];
 
   return (
     <div className="up-layout">
@@ -53,7 +86,9 @@ const handleSearch = () => {
           {recentPatients.map((p) => (
             <li
               key={p.id}
-              className={`up-patient-item ${activePatient === p.id ? "active" : ""}`}
+              className={`up-patient-item ${
+                activePatient === p.id ? "active" : ""
+              }`}
               onClick={() => setActivePatient(p.id)}
             >
               {p.firstName} {p.lastName}
@@ -61,14 +96,19 @@ const handleSearch = () => {
           ))}
         </ul>
 
-        <button className="up-add-btn">
-          <span className="up-add-icon"><AddIcon /></span> Add new patient
+        <button className="up-add-btn" onClick={() => setShowAddModal(true)}>
+          <span className="up-add-icon">
+            <AddIcon />
+          </span>
+          Add new patient
         </button>
       </aside>
 
       <main className="up-main">
         <div className="up-user-header">
-          <h1 className="up-user-name">{user?.firstName} {user?.lastName}</h1>
+          <h1 className="up-user-name">
+            {user?.firstName} {user?.lastName}
+          </h1>
           <p className="up-user-title">{user?.title}</p>
         </div>
 
@@ -79,23 +119,54 @@ const handleSearch = () => {
             placeholder="SEARCH PATIENTS..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
           />
-       <Button className="up-search-btn" onClick={() => console.log("button clicked")}>
-  SEARCH
-</Button>
+
+          <Button className="up-search-btn">SEARCH</Button>
         </div>
 
         <div className="up-results">
-          {filteredPatients.map((p) => (
-            <div key={p.id} className="up-result-item">
-              {p.firstName} {p.lastName}
-            </div>
-          ))}
-          {filteredPatients.length === 0 && (
+          {filteredPatients.length > 0 ? (
+            filteredPatients.map((p) => (
+              <div
+                key={p.id}
+                className="up-result-item"
+                onClick={() => setActivePatient(p.id)}
+              >
+                {p.firstName} {p.lastName}
+              </div>
+            ))
+          ) : (
             <p className="up-no-results">No patients found.</p>
           )}
         </div>
+
+        {/* pagination */}
+        <div className="up-pagination">
+          <button
+            disabled={page === 0}
+            onClick={() => setPage((prev) => prev - 1)}
+          >
+            Previous
+          </button>
+
+          <span>
+            Page {page + 1} of {totalPages || 1}
+          </span>
+
+          <button
+            disabled={page >= totalPages - 1}
+            onClick={() => setPage((prev) => prev + 1)}
+          >
+            Next
+          </button>
+        </div>
+
+        {showAddModal && (
+          <AddPatientModal
+            onClose={() => setShowAddModal(false)}
+            onPatientCreated={handlePatientCreated}
+          />
+        )}
       </main>
     </div>
   );
