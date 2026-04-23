@@ -19,13 +19,11 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("handleSubmit сработал"); // ← видишь это?
     setError("");
     try {
       await login(username, password);
       navigate(from, { replace: true });
     } catch (err) {
-      console.log("catch worked", err); // ← видишь это?
       setError("Invalid username or password");
     }
   };
