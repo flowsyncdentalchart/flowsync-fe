@@ -1,0 +1,246 @@
+.up-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #0b0f1a;
+  color: #e2e8f0;
+}
+
+.up-sidebar {
+  width: 276px;
+  min-width: 276px;
+  background-color: #0d1120;
+  border-right: 1px solid #1e2a40;
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.up-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.up-logo-icon {
+  display: flex;
+  align-items: center;
+}
+
+.up-logo-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.up-logo-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e2e8f0;
+  letter-spacing: 0.02em;
+}
+
+.up-section-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #5b8dd9;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+.up-patient-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.up-patient-item {
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #a0aec0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.up-patient-item:hover {
+  background-color: #1a2540;
+  color: #e2e8f0;
+}
+
+.up-patient-item.active {
+  background-color: #1e2d4a;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+.up-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #a0aec0;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-top: auto;
+  transition: color 0.15s, background 0.15s;
+  text-align: left;
+}
+
+.up-add-btn:hover {
+  background-color: #1a2540;
+  color: #e2e8f0;
+}
+
+.up-logo-icon {
+width: 20px;
+height: 20px;
+}
+
+.up-main {
+  flex: 1;
+  padding: 40px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+ 
+.up-user-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+ 
+.up-user-name {
+  font-size: 26px;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin: 0;
+}
+ 
+.up-user-title {
+  font-size: 14px;
+  color: #5b8dd9;
+  margin: 0;
+  font-weight: 500;
+}
+
+
+.up-search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #111827;
+  border: 1px solid #1e2a40;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 48px;
+}
+
+.up-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #a0aec0;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 0 20px;
+}
+
+.up-search-input::placeholder {
+  color: #4a5568;
+}
+
+.up-search-btn {
+width: 20%;
+}
+
+.up-results {
+  background-color: #111827;
+  border: 1px solid #1e2a40;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.up-result-item {
+  padding: 14px 18px;
+  background-color: #151d2e;
+  border: 1px solid #1e2a40;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #c8d6e8;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.up-result-item:hover {
+  background-color: #1a2540;
+  border-color: #2d4a7a;
+}
+
+.up-no-results {
+  text-align: center;
+  color: #4a5568;
+  font-size: 14px;
+  padding: 24px 0;
+}
+
+.up-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 24px;
+  padding: 12px 0;
+}
+
+.up-pagination button {
+  background-color: #111827;
+  border: 1px solid #1e2a40;
+  color: #a0aec0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 110px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.up-pagination button:hover:not(:disabled) {
+  background-color: #1a2540;
+  border-color: #2d4a7a;
+  color: #e2e8f0;
+  transform: translateY(-1px);
+}
+
+.up-pagination button:disabled {
+  background-color: #0d1120;
+  border-color: #1e2a40;
+  color: #4a5568;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.up-pagination span {
+  font-size: 13px;
+  font-weight: 500;
+  color: #a0aec0;
+  background: #111827;
+  border: 1px solid #1e2a40;
+  padding: 6px 12px;
+  border-radius: 999px;
+}

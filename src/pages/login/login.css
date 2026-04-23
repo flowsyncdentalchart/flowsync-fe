@@ -1,0 +1,136 @@
+/* login.css */
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #060d1a;
+  overflow: hidden;
+  position: relative;
+}
+
+.login-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 15% 20%, transparent 40px, #0d1f3c 41px, transparent 42px),
+    radial-gradient(circle at 15% 20%, transparent 80px, #0d1f3c 81px, transparent 82px),
+    radial-gradient(circle at 15% 20%, transparent 120px, #0d1f3c 121px, transparent 122px),
+    radial-gradient(circle at 85% 15%, transparent 50px, #0d1f3c 51px, transparent 52px),
+    radial-gradient(circle at 85% 15%, transparent 95px, #0d1f3c 96px, transparent 97px),
+    radial-gradient(circle at 85% 15%, transparent 140px, #0d1f3c 141px, transparent 142px),
+    radial-gradient(circle at 10% 55%, transparent 45px, #0d1f3c 46px, transparent 47px),
+    radial-gradient(circle at 10% 55%, transparent 90px, #0d1f3c 91px, transparent 92px),
+    radial-gradient(circle at 10% 55%, transparent 135px, #0d1f3c 136px, transparent 137px),
+    radial-gradient(circle at 88% 50%, transparent 45px, #0d1f3c 46px, transparent 47px),
+    radial-gradient(circle at 88% 50%, transparent 90px, #0d1f3c 91px, transparent 92px),
+    radial-gradient(circle at 88% 50%, transparent 135px, #0d1f3c 136px, transparent 137px),
+    radial-gradient(circle at 12% 85%, transparent 55px, #0d1f3c 56px, transparent 57px),
+    radial-gradient(circle at 12% 85%, transparent 105px, #0d1f3c 106px, transparent 107px),
+    radial-gradient(circle at 12% 85%, transparent 155px, #0d1f3c 156px, transparent 157px),
+    radial-gradient(circle at 87% 85%, transparent 55px, #0d1f3c 56px, transparent 57px),
+    radial-gradient(circle at 87% 85%, transparent 105px, #0d1f3c 106px, transparent 107px),
+    radial-gradient(circle at 87% 85%, transparent 155px, #0d1f3c 156px, transparent 157px),
+    radial-gradient(circle at 50% 5%, transparent 50px, #0d1f3c 51px, transparent 52px),
+    radial-gradient(circle at 50% 5%, transparent 95px, #0d1f3c 96px, transparent 97px),
+    radial-gradient(circle at 50% 5%, transparent 140px, #0d1f3c 141px, transparent 142px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.login-container {
+  position: relative;
+  z-index: 1;
+  background: rgba(15, 28, 50, 0.85);
+  padding: 48px 40px 48px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  height: 700px;
+  width: 600px;
+}
+
+.logo-container {
+  padding-top: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.logo-container svg,
+.logo-container img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 16px;
+  color: white;
+  stroke: white;
+}
+
+.logo-subtext,
+.login-subtext {
+  font-size: 17px;
+  color: #3B82F6;
+  text-align: center;
+  margin-bottom: 4px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.login-text {
+  font-size: 60px;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.form {
+  padding-top: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.login-form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.login-form-group input,
+.login-input {
+  width: 100%;
+  padding: 13px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  font-size: 14px;
+  color: #cbd5e1;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.login-form-group input::placeholder,
+.login-input::placeholder {
+  color: #64748b;
+}
+
+.login-form-group input:focus,
+.login-input:focus {
+  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.login-error {
+  color: #ef4444;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 4px;
+  width: 100%;
+}

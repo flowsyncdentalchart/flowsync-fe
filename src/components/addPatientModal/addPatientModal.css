@@ -1,0 +1,88 @@
+.add-patient-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.add-patient-modal {
+  background-color: #0d1120;
+  border: 1px solid #1e2a40;
+  border-radius: 14px;
+  width: 380px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.add-patient-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin: 0;
+}
+
+.add-patient-input {
+  background-color: #111827;
+  border: 1px solid #1e2a40;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #e2e8f0;
+  outline: none;
+}
+
+.add-patient-input::placeholder {
+  color: #4a5568;
+}
+
+.add-patient-input:focus {
+  border-color: #5b8dd9;
+}
+
+.add-patient-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.add-patient-cancel {
+  background: none;
+  border: 1px solid #1e2a40;
+  color: #a0aec0;
+  font-size: 14px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.add-patient-cancel:hover {
+  background-color: #1a2540;
+  color: #e2e8f0;
+}
+
+.add-patient-submit {
+  background-color: #1e4d8c;
+  color: #90cdf4;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.add-patient-submit:hover {
+  background-color: #2563ab;
+}
+
+.add-patient-error {
+  color: #fc8181;
+  font-size: 13px;
+  margin: 0;
+}
